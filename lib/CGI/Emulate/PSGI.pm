@@ -93,6 +93,10 @@ sub handler {
 1;
 __END__
 
+=head1 NAME
+
+CGI::Emulate::PSGI - PSGI adapter for CGI
+
 =head1 SYNOPSIS
 
     my $app = CGI::Emulate::PSGI->handler(sub {
@@ -143,5 +147,26 @@ into:
   };
 
 See L<CGI::PSGI> for details.
+
+=head1 SEE ALSO
+
+L<PSGI>.
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno <tokuhirom@cpan.org>
+
+Tatsuhiko Miyagawa
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2009 by tokuhirom.
+
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
+
 
 =cut
