@@ -123,8 +123,10 @@ If your application uses L<CGI>, be sure to cleanup the global
 variables in the handler loop yourself, so:
 
     my $app = CGI::Emulate::PSGI->handler(sub {
-        do "script-that-uses-cgi-pm.cgi";
-        CGI::initialize_globals() if defined &CGI::initialize_globals;
+        use CGI;
+        CGI::initialize_globals();
+        my $q = CGI->new;
+        # ...
     });
 
 Otherwise previous request variables will be reused in the new
@@ -132,8 +134,13 @@ requests.
 
 Alternatively, you can install and use L<CGI::Compile> from CPAN and
 compiles your existing CGI scripts into a sub that is perfectly ready
-to be converted to PSGI application using this module. See
-L<CGI::Compile> for details.
+to be converted to PSGI application using this module.
+
+  my $sub = CGI::Compile->compile("/path/to/script.cgi");
+  my $app = CGI::Emulate::PSGI->handler($sub);
+
+This will take care of assigning an unique namespace for each script
+etc. See L<CGI::Compile> for details.
 
 You can also consider using L<CGI::PSGI> but that would require you to
 slightly change your code from:
