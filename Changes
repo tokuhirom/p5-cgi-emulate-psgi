@@ -1,3 +1,7 @@
+0.02 Sun Dec  6 06:05:25 GMT 2009
+     - Added docs about CGI::Compile
+     - Fixed a warning for SEEK_SET imported twice
+
 0.01
 
     - initial release

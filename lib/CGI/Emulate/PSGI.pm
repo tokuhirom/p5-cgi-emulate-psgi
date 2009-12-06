@@ -6,7 +6,7 @@ use HTTP::Response;
 use IO::File ();
 use 5.00800;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub handler {
     my ($class, $code, ) = @_;
