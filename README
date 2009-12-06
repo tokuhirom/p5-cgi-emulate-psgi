@@ -3,8 +3,7 @@ NAME
 
 SYNOPSIS
         my $app = CGI::Emulate::PSGI->handler(sub {
-            # Existent CGI code, or just:
-            do "script.cgi";
+            # Existing CGI code
         });
 
   DESCRIPTION
@@ -22,14 +21,26 @@ CGI.pm
     the handler loop yourself, so:
 
         my $app = CGI::Emulate::PSGI->handler(sub {
-            do "script-that-uses-cgi-pm.cgi";
-            CGI::initialize_globals() if defined &CGI::initialize_globals;
+            use CGI;
+            CGI::initialize_globals();
+            my $q = CGI->new;
+            # ...
         });
 
     Otherwise previous request variables will be reused in the new requests.
 
-    Alternatively, you can install and use CGI::PSGI from CPAN, but that
-    would require you to slightly change your code from:
+    Alternatively, you can install and use CGI::Compile from CPAN and
+    compiles your existing CGI scripts into a sub that is perfectly ready to
+    be converted to PSGI application using this module.
+
+      my $sub = CGI::Compile->compile("/path/to/script.cgi");
+      my $app = CGI::Emulate::PSGI->handler($sub);
+
+    This will take care of assigning an unique namespace for each script
+    etc. See CGI::Compile for details.
+
+    You can also consider using CGI::PSGI but that would require you to
+    slightly change your code from:
 
       my $q = CGI->new;
       # ...
@@ -48,9 +59,6 @@ CGI.pm
 
     See CGI::PSGI for details.
 
-SEE ALSO
-    PSGI.
-
 AUTHOR
     Tokuhiro Matsuno <tokuhirom@cpan.org>
 
@@ -64,4 +72,7 @@ COPYRIGHT AND LICENSE
 
     The full text of the license can be found in the LICENSE file included
     with this module.
+
+SEE ALSO
+    PSGI CGI::Compile CGI::PSGI Plack
 
