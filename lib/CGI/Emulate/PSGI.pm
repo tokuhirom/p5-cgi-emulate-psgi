@@ -32,7 +32,7 @@ sub handler {
             local *STDIN  = $env->{'psgi.input'};
             local *STDOUT = $stdout;
             local *STDERR = $env->{'psgi.errors'};
-            local *ENV    = $environment;
+            local @ENV{sort keys %$environment} = map { $environment->{$_} } sort keys %$environment;
 
             $code->();
         }

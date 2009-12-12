@@ -6,10 +6,13 @@ use Test::More;
 
 my $err;
 $ENV{REQUEST_METHOD} = 'GET';
+$ENV{HOK} = 'gahaha';
 my $handler = CGI::Emulate::PSGI->handler(
     sub {
         is $ENV{REMOTE_ADDR}, '192.168.1.1';
         is $ENV{REQUEST_METHOD}, 'POST';
+        is $ENV{HOK}, 'gahaha', 'env passed in';
+        $ENV{HOK} = 'zzz';
         my $q = CGI->new();
         is $q->param('hello'), 'world';
         print "Content-Type: text/html; charset=utf-8\r\n";
@@ -41,6 +44,7 @@ is $headers->{'Content-Type'}, 'text/html; charset=utf-8';
 is $headers->{'Content-Length'}, 4;
 is_deeply $res->[2], ['KTKR'];
 is $ENV{REQUEST_METHOD}, 'GET', 'restored';
+is $ENV{HOK}, 'zzz', 'env passed out';
 
 is $err, "hello error\n";
 
