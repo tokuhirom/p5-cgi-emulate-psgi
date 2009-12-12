@@ -1,3 +1,6 @@
+0.04 Fri Dec 11 22:59:14 PST 2009
+     - Do not override existing %ENV values (kazuho)
+
 0.03 Sun Dec  6 06:05:25 GMT 2009
      - Added docs about CGI::Compile
      - Fixed a warning for SEEK_SET imported twice
