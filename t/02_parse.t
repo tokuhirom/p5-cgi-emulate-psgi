@@ -13,9 +13,7 @@ Multiline: Foo
 This is the body!
 CGI
 
-open my $io, "<", \$output;
-
-my $r = parse_cgi_output($io);
+my $r = parse_cgi_output(\$output);
 is $r->[0], 302;
 
 my $h = HTTP::Headers->new;

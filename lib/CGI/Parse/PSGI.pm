@@ -7,10 +7,15 @@ use IO::File; # perl bug: should be loaded to call ->getline etc. on filehandle/
 use HTTP::Response;
 
 sub parse_cgi_output {
-    my $stdout = shift;
+    my $output = shift;
+
+    if (ref $output eq 'SCALAR') {
+        open my $io, "<", $output;
+        $output = $io;
+    }
 
     my $headers;
-    while ( my $line = $stdout->getline ) {
+    while ( my $line = $output->getline ) {
         $headers .= $line;
         last if $headers =~ /\x0d?\x0a\x0d?\x0a$/;
     }
@@ -28,7 +33,7 @@ sub parse_cgi_output {
     my $status = $response->header('Status') || 200;
     $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
 
-    my $length = ( stat( $stdout ) )[7] - tell( $stdout );
+    my $length = ( stat( $output ) )[7] - tell( $output );
     if ( $response->code == 500 && !$length ) {
         return [
             500,
@@ -37,11 +42,11 @@ sub parse_cgi_output {
         ];
     }
 
-    # TODO we can pass $stdout to the response body without buffering all?
+    # TODO we can pass $output to the response body without buffering all?
 
     {
         my $length = 0;
-        while ( $stdout->read( my $buffer, 4096 ) ) {
+        while ( $output->read( my $buffer, 4096 ) ) {
             $length += length($buffer);
             $response->add_content($buffer);
         }
@@ -76,18 +81,14 @@ CGI::Parse::PSGI - Parses CGI output and creates PSGI response out of it
   use CGI::Parse::PSGI qw(parse_cgi_output);
 
   my $output = YourApp->run;
-  open my $handle, "<", \$output;
-
-  my $psgi_res = parse_cgi_output($handle);
+  my $psgi_res = parse_cgi_output(\$output);
 
 =head1 SYNOPSIS
 
 CGI::Parse::PSGI exports one function C<parse_cgi_output> that takes a
-filehandle that reads CGI script output, and creates a PSGI response
-(an array reference containing status code, headers and a body) by
-reading the output. If you have the script output in a string, you
-should create a PerlIO handle from it (or use L<IO::Scalar>) to make
-it work with this module.
+filehandle or a reference to a string to read a CGI script output, and
+creates a PSGI response (an array reference containing status code,
+headers and a body) by reading the output.
 
 Use L<CGI::Emulate::PSGI> if you have a CGI I<code> not the I<output>,
 which takes care of automatically parsing the output, using this
