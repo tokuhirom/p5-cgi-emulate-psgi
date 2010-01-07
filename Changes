@@ -1,3 +1,7 @@
+0.05 Wed Jan  6 21:03:15 PST 2010
+     - Factored out CGI output parser into CGI::Parse::PSGI as well as
+       environment emulation as ->emulate_environment method (kazuho)
+
 0.04 Fri Dec 11 22:59:14 PST 2009
      - Do not override existing %ENV values (kazuho)
 

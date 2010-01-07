@@ -6,7 +6,7 @@ use POSIX 'SEEK_SET';
 use IO::File ();
 use 5.00800;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub handler {
     my ($class, $code, ) = @_;

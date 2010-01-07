@@ -14,7 +14,8 @@ SYNOPSIS
     It works by translating the environment provided by the PSGI
     specification to one expected by the CGI specification. Likewise, it
     captures output as it would be prepared for the CGI standard, and
-    translates it to the format expected for the PSGI standard.
+    translates it to the format expected for the PSGI standard using
+    CGI::Parse::PSGI module.
 
 CGI.pm
     If your application uses CGI, be sure to cleanup the global variables in
@@ -59,6 +60,25 @@ CGI.pm
 
     See CGI::PSGI for details.
 
+METHODS
+    handler
+          my $app = CGI::Emulate::PSGI->handler($code);
+
+        Creates a PSGI application code reference out of CGI code reference.
+
+    emulate_environment
+          my %env = CGI::Emulate::PSGI->emulate_environment($env);
+
+        Creates an environment hash out of PSGI environment hash. If your
+        code or framework just needs an environment variable emulation, use
+        this method like:
+
+          local %ENV = (%ENV, CGI::Emulate::PSGI->emulate_environment($env));
+          # run your application
+
+        If you use "handler" method to create a PSGI environment hash, this
+        is automatically called in the created application.
+
 AUTHOR
     Tokuhiro Matsuno <tokuhirom@cpan.org>
 
@@ -74,5 +94,5 @@ COPYRIGHT AND LICENSE
     with this module.
 
 SEE ALSO
-    PSGI CGI::Compile CGI::PSGI Plack
+    PSGI CGI::Compile CGI::PSGI Plack CGI::Parse::PSGI
 
