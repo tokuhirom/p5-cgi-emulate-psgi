@@ -13,26 +13,15 @@ sub handler {
 
     return sub {
         my $env = shift;
-        no warnings;
-        my $environment = {
-            GATEWAY_INTERFACE => 'CGI/1.1',
-            # not in RFC 3875
-            HTTPS => ( ( $env->{'psgi.url_scheme'} eq 'https' ) ? 'ON' : 'OFF' ),
-            SERVER_SOFTWARE => "CGI-Emulate-PSGI",
-            REMOTE_ADDR     => '127.0.0.1',
-            REMOTE_HOST     => 'localhost',
-            REMOTE_PORT     => int( rand(64000) + 1000 ),    # not in RFC 3875
-            # REQUEST_URI     => $uri->path_query,                 # not in RFC 3875
-            ( map { $_ => $env->{$_} } grep !/^psgi\./, keys %$env )
-        };
 
         my $stdout  = IO::File->new_tmpfile;
 
         {
+            local %ENV = (%ENV, $class->emulate_environment($env));
+
             local *STDIN  = $env->{'psgi.input'};
             local *STDOUT = $stdout;
             local *STDERR = $env->{'psgi.errors'};
-            local @ENV{keys %$environment} = values %$environment;
 
             $code->();
         }
@@ -42,6 +31,25 @@ sub handler {
 
         return CGI::Parse::PSGI::parse_cgi_output($stdout);
     };
+}
+
+sub emulate_environment {
+    my($class, $env) = @_;
+
+    no warnings;
+    my $environment = {
+        GATEWAY_INTERFACE => 'CGI/1.1',
+        # not in RFC 3875
+        HTTPS => ( ( $env->{'psgi.url_scheme'} eq 'https' ) ? 'ON' : 'OFF' ),
+        SERVER_SOFTWARE => "CGI-Emulate-PSGI",
+        REMOTE_ADDR     => '127.0.0.1',
+        REMOTE_HOST     => 'localhost',
+        REMOTE_PORT     => int( rand(64000) + 1000 ),    # not in RFC 3875
+        # REQUEST_URI     => $uri->path_query,                 # not in RFC 3875
+        ( map { $_ => $env->{$_} } grep !/^psgi\./, keys %$env )
+    };
+
+    return wantarray ? %$environment : $environment;
 }
 
 1;
@@ -113,6 +121,32 @@ into:
   };
 
 See L<CGI::PSGI> for details.
+
+=head1 METHODS
+
+=over 4
+
+=item handler
+
+  my $app = CGI::Emulate::PSGI->handler($code);
+
+Creates a PSGI application code reference out of CGI code reference.
+
+=item emulate_environment
+
+  my %env = CGI::Emulate::PSGI->emulate_environment($env);
+
+Creates an environment hash out of PSGI environment hash. If your code
+or framework just needs an environment variable emulation, use this
+method like:
+
+  local %ENV = (%ENV, CGI::Emulate::PSGI->emulate_environment($env));
+  # run your application
+
+If you use C<handler> method to create a PSGI environment hash, this
+is automatically called in the created application.
+
+=back
 
 =head1 AUTHOR
 

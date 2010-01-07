@@ -44,7 +44,6 @@ is $headers->{'Content-Type'}, 'text/html; charset=utf-8';
 is $headers->{'Content-Length'}, 4;
 is_deeply $res->[2], ['KTKR'];
 is $ENV{REQUEST_METHOD}, 'GET', 'restored';
-is $ENV{HOK}, 'zzz', 'env passed out';
 
 is $err, "hello error\n";
 
