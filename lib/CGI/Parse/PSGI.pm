@@ -9,9 +9,13 @@ use HTTP::Response;
 sub parse_cgi_output {
     my $output = shift;
 
+    my $length;
     if (ref $output eq 'SCALAR') {
+        $length = length $$output;
         open my $io, "<", $output;
         $output = $io;
+    } else {
+        $length = -s $output;
     }
 
     my $headers;
@@ -33,8 +37,8 @@ sub parse_cgi_output {
     my $status = $response->header('Status') || 200;
     $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
 
-    my $length = ( stat( $output ) )[7] - tell( $output );
-    if ( $response->code == 500 && !$length ) {
+    my $remaining = $length - tell( $output );
+    if ( $response->code == 500 && !$remaining ) {
         return [
             500,
             [ 'Content-Type' => 'text/html' ],
