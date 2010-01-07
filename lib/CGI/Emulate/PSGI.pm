@@ -1,8 +1,8 @@
 package CGI::Emulate::PSGI;
 use strict;
 use warnings;
+use CGI::Parse::PSGI;
 use POSIX 'SEEK_SET';
-use HTTP::Response;
 use IO::File ();
 use 5.00800;
 
@@ -40,56 +40,7 @@ sub handler {
         seek( $stdout, 0, SEEK_SET )
             or croak("Can't seek stdout handle: $!");
 
-        my $headers;
-        while ( my $line = $stdout->getline ) {
-            $headers .= $line;
-            last if $headers =~ /\x0d?\x0a\x0d?\x0a$/;
-        }
-        unless ( defined $headers ) {
-            $headers = "HTTP/1.1 500 Internal Server Error\x0d\x0a";
-        }
-
-        unless ( $headers =~ /^HTTP/ ) {
-            $headers = "HTTP/1.1 200 OK\x0d\x0a" . $headers;
-        }
-
-        my $response = HTTP::Response->parse($headers);
-        $response->date( time() ) unless $response->date;
-
-        my $status = $response->header('Status') || 200;
-        $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
-
-        my $length = ( stat( $stdout ) )[7] - tell( $stdout );
-        if ( $response->code == 500 && !$length ) {
-            return [
-                500,
-                [ 'Content-Type' => 'text/html' ],
-                [ $response->error_as_HTML ]
-            ];
-        }
-
-        {
-            my $length = 0;
-            while ( $stdout->read( my $buffer, 4096 ) ) {
-                $length += length($buffer);
-                $response->add_content($buffer);
-            }
-
-            if ( $length && !$response->content_length ) {
-                $response->content_length($length);
-            }
-        }
-
-        return [
-            $status,
-            +[
-                map {
-                    my $k = $_;
-                    map { ( $k => $_ ) } $response->headers->header($_);
-                } $response->headers->header_field_names
-            ],
-            [$response->content],
-        ];
+        return CGI::Parse::PSGI::parse_cgi_output($stdout);
     };
 }
 
@@ -115,7 +66,8 @@ supports.
 It works by translating the environment provided by the PSGI
 specification to one expected by the CGI specification. Likewise, it
 captures output as it would be prepared for the CGI standard, and
-translates it to the format expected for the PSGI standard.
+translates it to the format expected for the PSGI standard using
+L<CGI::Parse::PSGI> module.
 
 =head1 CGI.pm
 
@@ -180,7 +132,7 @@ LICENSE file included with this module.
 
 =head1 SEE ALSO
 
-L<PSGI> L<CGI::Compile> L<CGI::PSGI> L<Plack>
+L<PSGI> L<CGI::Compile> L<CGI::PSGI> L<Plack> L<CGI::Parse::PSGI>
 
 =cut
 
