@@ -21,3 +21,4 @@ README.mkdn
 t/00_compile.t
 t/01_simple.t
 t/02_parse.t
+t/03_socket.t
