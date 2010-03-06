@@ -4,6 +4,7 @@ use warnings;
 use CGI::Parse::PSGI;
 use POSIX 'SEEK_SET';
 use IO::File ();
+use SelectSaver;
 use 5.00800;
 
 our $VERSION = '0.05';
@@ -23,6 +24,7 @@ sub handler {
             local *STDOUT = $stdout;
             local *STDERR = $env->{'psgi.errors'};
 
+            my $saver = SelectSaver->new("::STDOUT");
             $code->();
         }
 
