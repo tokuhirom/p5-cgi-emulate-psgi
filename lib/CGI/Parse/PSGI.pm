@@ -15,6 +15,7 @@ sub parse_cgi_output {
         open my $io, "<", $output;
         $output = $io;
     } else {
+        binmode $output, ":raw";
         $length = -s $output;
     }
 
