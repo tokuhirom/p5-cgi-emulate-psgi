@@ -1,3 +1,6 @@
+0.08 Sat May  1 04:30:25 PDT 2010
+     - Fixed Test::More deps
+
 0.07 Tue Apr 27 15:44:08 PDT 2010
      - binmode the stdout filehandle when parsing
 
