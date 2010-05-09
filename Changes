@@ -1,3 +1,6 @@
+0.09 Sat May  8 18:52:04 PDT 2010
+     - Added a test for utf8 decoding
+
 0.08 Sat May  1 04:30:25 PDT 2010
      - Fixed Test::More deps
 
