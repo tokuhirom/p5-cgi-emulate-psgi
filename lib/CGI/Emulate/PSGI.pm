@@ -41,7 +41,6 @@ sub emulate_environment {
     no warnings;
     my $environment = {
         GATEWAY_INTERFACE => 'CGI/1.1',
-        # not in RFC 3875
         HTTPS => ( ( $env->{'psgi.url_scheme'} eq 'https' ) ? 'ON' : 'OFF' ),
         SERVER_SOFTWARE => "CGI-Emulate-PSGI",
         REMOTE_ADDR     => '127.0.0.1',
