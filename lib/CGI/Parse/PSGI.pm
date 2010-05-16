@@ -15,7 +15,8 @@ sub parse_cgi_output {
         open my $io, "<", $output;
         $output = $io;
     } else {
-        binmode $output, ":raw";
+        open my $tmp, '<&=:perlio:raw', fileno($output) or die $!;
+        $output = $tmp;
         $length = -s $output;
     }
 
