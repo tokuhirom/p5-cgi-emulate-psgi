@@ -1,3 +1,7 @@
+0.10 Sun May 16 00:39:55 PDT 2010
+     - Added a possible workaround to deal with Win32 systems to undo :utf8 PerlIO layer
+       perl #75106 (suggested by Eric Brine)
+
 0.09 Sat May  8 18:52:04 PDT 2010
      - Added a test for utf8 decoding
 
