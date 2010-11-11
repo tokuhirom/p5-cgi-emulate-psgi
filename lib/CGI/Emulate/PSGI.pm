@@ -66,7 +66,7 @@ CGI::Emulate::PSGI - PSGI adapter for CGI
         # Existing CGI code
     });
 
-=head2 DESCRIPTION
+=head1 DESCRIPTION
 
 This module allows an application designed for the CGI environment to
 run in a PSGI environment, and thus on any of the backends that PSGI
