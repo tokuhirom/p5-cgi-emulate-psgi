@@ -6,7 +6,7 @@ SYNOPSIS
             # Existing CGI code
         });
 
-  DESCRIPTION
+DESCRIPTION
     This module allows an application designed for the CGI environment to
     run in a PSGI environment, and thus on any of the backends that PSGI
     supports.
@@ -85,7 +85,7 @@ AUTHOR
     Tatsuhiko Miyagawa
 
 COPYRIGHT AND LICENSE
-    Copyright (c) 2009 by tokuhirom.
+    Copyright (c) 2009-2010 by tokuhirom.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
