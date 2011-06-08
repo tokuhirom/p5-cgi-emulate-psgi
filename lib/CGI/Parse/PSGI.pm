@@ -39,6 +39,8 @@ sub parse_cgi_output {
     my $status = $response->header('Status') || 200;
     $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
 
+    $response->remove_header('Status'); # PSGI doesn't allow having Status header in the response
+
     my $remaining = $length - tell( $output );
     if ( $response->code == 500 && !$remaining ) {
         return [
@@ -67,11 +69,17 @@ sub parse_cgi_output {
         +[
             map {
                 my $k = $_;
-                map { ( $k => $_ ) } $response->headers->header($_);
+                map { ( $k => _cleanup_newline($_) ) } $response->headers->header($_);
             } $response->headers->header_field_names
         ],
         [$response->content],
     ];
+}
+
+sub _cleanup_newline {
+    local $_ = shift;
+    s/\r?\n//g;
+    return $_;
 }
 
 1;
