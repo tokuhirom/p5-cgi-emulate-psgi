@@ -13,6 +13,7 @@ inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 inc/Pod/Markdown.pm
 inc/Test/More.pm
+inc/Test/Requires.pm
 lib/CGI/Emulate/PSGI.pm
 lib/CGI/Parse/PSGI.pm
 Makefile.PL
@@ -25,3 +26,4 @@ t/01_simple.t
 t/02_parse.t
 t/03_socket.t
 t/04_utf8.t
+t/05_lint.t

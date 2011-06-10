@@ -1,3 +1,7 @@
+0.12 Thu Jun  9 23:58:10 PDT 2011
+     - Fixed the PSGI header generation to prevent invalid PSGI response headers
+       such as newlines in the value and "Status" key
+
 0.11 Fri Feb 18 21:35:29 PST 2011
      - Filter psgix.* environment too (mkanat)
 

@@ -7,7 +7,7 @@ use IO::File ();
 use SelectSaver;
 use 5.00800;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 sub handler {
     my ($class, $code, ) = @_;
