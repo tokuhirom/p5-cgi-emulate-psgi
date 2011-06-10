@@ -34,7 +34,6 @@ sub parse_cgi_output {
     }
 
     my $response = HTTP::Response->parse($headers);
-    $response->date( time() ) unless $response->date;
 
     my $status = $response->header('Status') || 200;
     $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
