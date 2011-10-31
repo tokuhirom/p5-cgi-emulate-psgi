@@ -1,3 +1,6 @@
+0.14 Mon Oct 31 10:37:49 PDT 2011
+     - Fixed a bug where croak was not imported from Carp (ctfliblime)
+
 0.13 Sun Sep 18 12:10:56 PDT 2011
      - Set the status header to 302 if there's Location header but no Status in the resonse (ASP)
 
