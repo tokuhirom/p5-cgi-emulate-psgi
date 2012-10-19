@@ -1,3 +1,6 @@
+0.15 Fri Oct 19 15:09:17 PDT 2012
+     - Repackage with the latest Module::Install
+
 0.14 Mon Oct 31 10:37:49 PDT 2011
      - Fixed a bug where croak was not imported from Carp (ctfliblime)
 
