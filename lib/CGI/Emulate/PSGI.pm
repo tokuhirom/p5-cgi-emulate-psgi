@@ -21,7 +21,8 @@ sub handler {
         {
             local %ENV = (%ENV, $class->emulate_environment($env));
 
-            local *STDIN  = $env->{'psgi.input'};
+            local *STDIN;
+            tie (*STDIN, 'CGI::Emulate::PSGI::Handle', $env->{'psgi.input'});
             local *STDOUT = $stdout;
             local *STDERR = $env->{'psgi.errors'};
 
@@ -52,6 +53,26 @@ sub emulate_environment {
     };
 
     return wantarray ? %$environment : $environment;
+}
+
+package CGI::Emulate::PSGI::Handle;
+
+require Tie::Handle;
+our @ISA = qw(Tie::Handle);
+
+sub READ {
+  my $self = shift;
+  my $bufref = \$_[0];
+  my (undef, $len, $offset) = @_;
+  my $buf;
+  my $ret = $$self->read($buf, $len, $offset);
+  $$bufref = $buf;
+  $ret;
+}
+
+sub TIEHANDLE {
+  my ($class, $ref) = @_;
+  bless \$ref, shift
 }
 
 1;
