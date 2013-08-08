@@ -22,9 +22,10 @@ sub handler {
             local %ENV = (%ENV, $class->emulate_environment($env));
 
             local *STDIN;
-            tie (*STDIN, 'CGI::Emulate::PSGI::Handle', $env->{'psgi.input'});
+            tie (*STDIN, 'CGI::Emulate::PSGI::InputHandle', $env->{'psgi.input'});
             local *STDOUT = $stdout;
-            local *STDERR = $env->{'psgi.errors'};
+            local *STDERR;
+            tie (*STDERR, 'CGI::Emulate::PSGI::ErrorsHandle', $env->{'psgi.errors'});
 
             my $saver = SelectSaver->new("::STDOUT");
             $code->();
@@ -55,7 +56,7 @@ sub emulate_environment {
     return wantarray ? %$environment : $environment;
 }
 
-package CGI::Emulate::PSGI::Handle;
+package CGI::Emulate::PSGI::InputHandle;
 
 require Tie::Handle;
 our @ISA = qw(Tie::Handle);
@@ -68,6 +69,21 @@ sub READ {
   my $ret = $$self->read($buf, $len, $offset);
   $$bufref = $buf;
   $ret;
+}
+
+sub TIEHANDLE {
+  my ($class, $ref) = @_;
+  bless \$ref, shift
+}
+
+package CGI::Emulate::PSGI::ErrorsHandle;
+
+require Tie::Handle;
+our @ISA = qw(Tie::Handle);
+
+sub PRINT {
+  my ($self, $msg) = @_;
+  $$self->print($msg);
 }
 
 sub TIEHANDLE {
