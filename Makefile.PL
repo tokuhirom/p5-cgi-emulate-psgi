@@ -1,17 +1,67 @@
-sub readme_markdown_from { }
-sub readme_from { }
 
-use inc::Module::Install;
-name 'CGI-Emulate-PSGI';
-all_from 'lib/CGI/Emulate/PSGI.pm';
+use strict;
+use warnings;
 
-requires 'HTTP::Response';
-tests 't/*.t t/*/*.t t/*/*/*.t';
-author_tests 'xt';
+use 5.008010;
 
-readme_from 'lib/CGI/Emulate/PSGI.pm';
-readme_markdown_from 'lib/CGI/Emulate/PSGI.pm';
-build_requires 'Test::More'       => 0.94;
-test_requires 'Test::Requires';
-auto_include;
-WriteAll;
+use ExtUtils::MakeMaker 6.30;
+
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "PSGI adapter for CGI",
+  "AUTHOR" => "Tokuhiro Matsuno <tokuhirom\@cpan.org>",
+  "BUILD_REQUIRES" => {},
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
+  },
+  "DISTNAME" => "CGI-Emulate-PSGI",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "CGI::Emulate::PSGI",
+  "PREREQ_PM" => {
+    "HTTP::Response" => 0
+  },
+  "TEST_REQUIRES" => {
+    "Test::More" => "0.88"
+  },
+  "VERSION" => "0.15",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
+);
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+

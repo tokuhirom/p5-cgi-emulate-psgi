@@ -4,3 +4,10 @@ inc/
 pm_to_blib
 *~
 blib
+/cgi-emulate-psgi-*
+/.build
+/_build_params
+/Build
+!Build/
+!META.json
+!LICENSE

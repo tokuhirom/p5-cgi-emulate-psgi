@@ -1,3 +1,7 @@
+{{$NEXT}}
+        - Use tied handle for STDIN/STDERR (#3)
+        - Convert to Milla
+
 0.15 Fri Oct 19 15:09:17 PDT 2012
      - Repackage with the latest Module::Install
 

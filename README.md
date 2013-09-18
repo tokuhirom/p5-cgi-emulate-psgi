@@ -69,23 +69,23 @@ See [CGI::PSGI](http://search.cpan.org/perldoc?CGI::PSGI) for details.
 
 - handler
 
-    my $app = CGI::Emulate::PSGI->handler($code);
+        my $app = CGI::Emulate::PSGI->handler($code);
 
-Creates a PSGI application code reference out of CGI code reference.
+    Creates a PSGI application code reference out of CGI code reference.
 
 - emulate\_environment
 
-    my %env = CGI::Emulate::PSGI->emulate_environment($env);
+        my %env = CGI::Emulate::PSGI->emulate_environment($env);
 
-Creates an environment hash out of PSGI environment hash. If your code
-or framework just needs an environment variable emulation, use this
-method like:
+    Creates an environment hash out of PSGI environment hash. If your code
+    or framework just needs an environment variable emulation, use this
+    method like:
 
-    local %ENV = (%ENV, CGI::Emulate::PSGI->emulate_environment($env));
-    # run your application
+        local %ENV = (%ENV, CGI::Emulate::PSGI->emulate_environment($env));
+        # run your application
 
-If you use `handler` method to create a PSGI environment hash, this
-is automatically called in the created application.
+    If you use `handler` method to create a PSGI environment hash, this
+    is automatically called in the created application.
 
 # AUTHOR
 

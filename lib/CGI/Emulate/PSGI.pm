@@ -6,7 +6,7 @@ use POSIX 'SEEK_SET';
 use IO::File ();
 use SelectSaver;
 use Carp qw(croak);
-use 5.00800;
+use 5.008001;
 
 our $VERSION = '0.15';
 
