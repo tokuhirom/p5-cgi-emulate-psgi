@@ -46,7 +46,7 @@
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/tokuhirom/p5-cgi-emulate-psgi/issues"
@@ -58,7 +58,7 @@
          "web" : "https://github.com/tokuhirom/p5-cgi-emulate-psgi"
       }
    },
-   "version" : "0.15",
+   "version" : "0.16",
    "x_contributors" : [
       "Bastian Blank <waldi@debian.org>",
       "Clay Fouts <cfouts@liblime.com>",

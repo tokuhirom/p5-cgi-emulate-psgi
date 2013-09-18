@@ -8,7 +8,7 @@ use SelectSaver;
 use Carp qw(croak);
 use 5.008001;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub handler {
     my ($class, $code, ) = @_;
