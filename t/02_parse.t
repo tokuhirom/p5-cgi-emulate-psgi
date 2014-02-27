@@ -49,6 +49,61 @@ CGI
     is_deeply $r->[2], [ "Redirected\n" ];
 }
 
+{
+    # Check that status header wins when present in addition to status line 200
+    my $output = <<CGI;
+HTTP/1.0 200 OK
+Status: 404
+Content-Type: text/plain
+
+Not found
+CGI
+
+    my($r, $h) = _parse($output);
+    is $r->[0], 404;
+}
+
+{
+    # Check status header (!=200) still wins when status line present, and not 200
+    my $output = <<CGI;
+HTTP/1.0 400 Bad Request
+Status: 404
+Content-Type: text/plain
+
+Not found
+CGI
+
+    my($r, $h) = _parse($output);
+    is $r->[0], 404;
+}
+
+{
+    # Check status header (==200) still wins when status line present, and not 200
+    my $output = <<CGI;
+HTTP/1.0 400 Bad Request
+Status: 200
+Content-Type: text/plain
+
+OK
+CGI
+
+    my($r, $h) = _parse($output);
+    is $r->[0], 200;
+}
+
+{
+    # Show status is 200 when status line present without status header, and not 200
+    my $output = <<CGI;
+HTTP/1.0 400 Bad Request
+Content-Type: text/plain
+
+Not found
+CGI
+
+    my($r, $h) = _parse($output);
+    is $r->[0], 200;
+}
+
 done_testing;
 
 sub _parse {
