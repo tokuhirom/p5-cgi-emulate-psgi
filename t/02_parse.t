@@ -92,16 +92,16 @@ CGI
 }
 
 {
-    # Show status is 200 when status line present without status header, and not 200
+    # Check status line is observed when status header is absent
     my $output = <<CGI;
 HTTP/1.0 400 Bad Request
 Content-Type: text/plain
 
-Not found
+Invalid parameters
 CGI
 
     my($r, $h) = _parse($output);
-    is $r->[0], 200;
+    is $r->[0], 400;
 }
 
 {
@@ -115,7 +115,7 @@ Invalid parameters
 CGI
 
     my($r, $h) = _parse($output, {ignore_status_line => 0});
-    is $r->[0], 200;
+    is $r->[0], 400;
 
     ($r, $h) = _parse($output, {ignore_status_line => 1});
     is $r->[0], 200;
