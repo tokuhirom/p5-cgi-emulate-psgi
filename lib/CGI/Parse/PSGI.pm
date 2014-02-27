@@ -40,8 +40,16 @@ sub parse_cgi_output {
         $response->header('Status', 302);
     }
 
-    my $status = $response->header('Status') || 200;
-    $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
+    my $status = $response->code || 200;
+    my $status_header = $response->header('Status');
+    if ($status_header) {
+        # Use the header status preferentially, if present and well formed
+
+        # Extract the code from the header (should be 3 digits, non zero)
+        my ($code) = ($status_header =~ /^ \s* (\d+) /x);
+
+        $status = $code || $status;
+    }
 
     $response->remove_header('Status'); # PSGI doesn't allow having Status header in the response
 
