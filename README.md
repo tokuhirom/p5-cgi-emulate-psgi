@@ -18,11 +18,11 @@ It works by translating the environment provided by the PSGI
 specification to one expected by the CGI specification. Likewise, it
 captures output as it would be prepared for the CGI standard, and
 translates it to the format expected for the PSGI standard using
-[CGI::Parse::PSGI](http://search.cpan.org/perldoc?CGI::Parse::PSGI) module.
+[CGI::Parse::PSGI](https://metacpan.org/pod/CGI::Parse::PSGI) module.
 
 # CGI.pm
 
-If your application uses [CGI](http://search.cpan.org/perldoc?CGI), be sure to cleanup the global
+If your application uses [CGI](https://metacpan.org/pod/CGI), be sure to cleanup the global
 variables in the handler loop yourself, so:
 
     my $app = CGI::Emulate::PSGI->handler(sub {
@@ -35,7 +35,7 @@ variables in the handler loop yourself, so:
 Otherwise previous request variables will be reused in the new
 requests.
 
-Alternatively, you can install and use [CGI::Compile](http://search.cpan.org/perldoc?CGI::Compile) from CPAN and
+Alternatively, you can install and use [CGI::Compile](https://metacpan.org/pod/CGI::Compile) from CPAN and
 compiles your existing CGI scripts into a sub that is perfectly ready
 to be converted to PSGI application using this module.
 
@@ -43,9 +43,9 @@ to be converted to PSGI application using this module.
     my $app = CGI::Emulate::PSGI->handler($sub);
 
 This will take care of assigning an unique namespace for each script
-etc. See [CGI::Compile](http://search.cpan.org/perldoc?CGI::Compile) for details.
+etc. See [CGI::Compile](https://metacpan.org/pod/CGI::Compile) for details.
 
-You can also consider using [CGI::PSGI](http://search.cpan.org/perldoc?CGI::PSGI) but that would require you to
+You can also consider using [CGI::PSGI](https://metacpan.org/pod/CGI::PSGI) but that would require you to
 slightly change your code from:
 
     my $q = CGI->new;
@@ -63,7 +63,7 @@ into:
         return [ $q->psgi_header, [ $output ] ];
     };
 
-See [CGI::PSGI](http://search.cpan.org/perldoc?CGI::PSGI) for details.
+See [CGI::PSGI](https://metacpan.org/pod/CGI::PSGI) for details.
 
 # METHODS
 
@@ -105,4 +105,4 @@ LICENSE file included with this module.
 
 # SEE ALSO
 
-[PSGI](http://search.cpan.org/perldoc?PSGI) [CGI::Compile](http://search.cpan.org/perldoc?CGI::Compile) [CGI::PSGI](http://search.cpan.org/perldoc?CGI::PSGI) [Plack](http://search.cpan.org/perldoc?Plack) [CGI::Parse::PSGI](http://search.cpan.org/perldoc?CGI::Parse::PSGI)
+[PSGI](https://metacpan.org/pod/PSGI) [CGI::Compile](https://metacpan.org/pod/CGI::Compile) [CGI::PSGI](https://metacpan.org/pod/CGI::PSGI) [Plack](https://metacpan.org/pod/Plack) [CGI::Parse::PSGI](https://metacpan.org/pod/CGI::Parse::PSGI)
