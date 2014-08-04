@@ -23,7 +23,7 @@ sub handler {
 
             local *STDIN;
             tie (*STDIN, 'CGI::Emulate::PSGI::InputHandle', $env->{'psgi.input'});
-            local *STDOUT = $stdout;
+            local *STDOUT = *$stdout;
             local *STDERR;
             tie (*STDERR, 'CGI::Emulate::PSGI::ErrorsHandle', $env->{'psgi.errors'});
 
