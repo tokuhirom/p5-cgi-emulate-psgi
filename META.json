@@ -37,7 +37,7 @@
       "runtime" : {
          "requires" : {
             "HTTP::Response" : "0",
-            "perl" : "5.00801"
+            "perl" : "5.008001"
          }
       },
       "test" : {
@@ -58,10 +58,11 @@
          "web" : "https://github.com/tokuhirom/p5-cgi-emulate-psgi"
       }
    },
-   "version" : "0.17",
+   "version" : "0.18",
    "x_contributors" : [
       "Bastian Blank <waldi@debian.org>",
       "Clay Fouts <cfouts@liblime.com>",
+      "Graham Knop <haarg@haarg.org>",
       "James Wright <james2vegas@aim.com>",
       "Kazuho Oku <kazuhooku@gmail.com>",
       "Mark Stosberg <mark@stosberg.com>",
