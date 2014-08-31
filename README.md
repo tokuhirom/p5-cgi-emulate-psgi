@@ -42,7 +42,7 @@ to be converted to PSGI application using this module.
     my $sub = CGI::Compile->compile("/path/to/script.cgi");
     my $app = CGI::Emulate::PSGI->handler($sub);
 
-This will take care of assigning an unique namespace for each script
+This will take care of assigning a unique namespace for each script
 etc. See [CGI::Compile](https://metacpan.org/pod/CGI::Compile) for details.
 
 You can also consider using [CGI::PSGI](https://metacpan.org/pod/CGI::PSGI) but that would require you to

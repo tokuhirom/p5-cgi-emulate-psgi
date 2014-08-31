@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.19  2014-08-31 14:04:44 JST
+        - Revert #3 since it causes deep recursion when printing to STDERR
+          inside CGI handler under some perl environments. #6
+
 0.18  2014-08-07 07:58:32 PDT
         - Fix perl prereq (haarg) #7
 

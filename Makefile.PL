@@ -20,12 +20,13 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "CGI::Emulate::PSGI",
   "PREREQ_PM" => {
+    "CGI" => "3.63",
     "HTTP::Response" => 0
   },
   "TEST_REQUIRES" => {
     "Test::More" => "0.88"
   },
-  "VERSION" => "0.18",
+  "VERSION" => "0.19",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -33,6 +34,7 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "CGI" => "3.63",
   "HTTP::Response" => 0,
   "Test::More" => "0.88"
 );
