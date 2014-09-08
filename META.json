@@ -43,7 +43,8 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.88"
+            "Test::More" : "0.88",
+            "Test::Requires" : "0.08"
          }
       }
    },
@@ -59,7 +60,7 @@
          "web" : "https://github.com/tokuhirom/p5-cgi-emulate-psgi"
       }
    },
-   "version" : "0.19",
+   "version" : "0.20",
    "x_contributors" : [
       "Bastian Blank <waldi@debian.org>",
       "Clay Fouts <cfouts@liblime.com>",

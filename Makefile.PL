@@ -24,9 +24,10 @@ my %WriteMakefileArgs = (
     "HTTP::Response" => 0
   },
   "TEST_REQUIRES" => {
-    "Test::More" => "0.88"
+    "Test::More" => "0.88",
+    "Test::Requires" => "0.08"
   },
-  "VERSION" => "0.19",
+  "VERSION" => "0.20",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -36,7 +37,8 @@ my %WriteMakefileArgs = (
 my %FallbackPrereqs = (
   "CGI" => "3.63",
   "HTTP::Response" => 0,
-  "Test::More" => "0.88"
+  "Test::More" => "0.88",
+  "Test::Requires" => "0.08"
 );
 
 

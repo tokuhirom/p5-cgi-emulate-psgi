@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.20  2014-09-08 11:06:19 PDT
+        - Add Test::Requires dependency (andk)
+
 0.19  2014-08-31 14:04:44 JST
         - Revert #3 since it causes deep recursion when printing to STDERR
           inside CGI handler under some perl environments. #6
