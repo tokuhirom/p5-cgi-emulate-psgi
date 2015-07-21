@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.21  2015-07-21 09:02:04 PDT
+        - Fix to restore the selected filehandle correctly #12
+
 0.20  2014-09-08 11:06:19 PDT
         - Add Test::Requires dependency (andk)
 
