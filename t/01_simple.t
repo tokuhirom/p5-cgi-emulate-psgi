@@ -4,6 +4,8 @@ use CGI;
 use CGI::Emulate::PSGI;
 use Test::More;
 
+my $fh = select;
+
 my $err;
 $ENV{REQUEST_METHOD} = 'GET';
 $ENV{HOK} = 'gahaha';
@@ -37,6 +39,8 @@ my $res = $handler->(
     }
 );
 
+my $post_fh = select;
+
 is $res->[0], 200;
 my $headers = +{@{$res->[1]}};
 is $headers->{'X-Foo'}, 'Bar';
@@ -46,6 +50,8 @@ is_deeply $res->[2], ['KTKR'];
 is $ENV{REQUEST_METHOD}, 'GET', 'restored';
 
 is $err, "hello error\n";
+
+is $fh,$post_fh,'SelectSaver worked';
 
 done_testing;
 
