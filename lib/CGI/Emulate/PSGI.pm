@@ -19,14 +19,16 @@ sub handler {
         my $stdout  = IO::File->new_tmpfile;
 
         {
-            local %ENV = (%ENV, $class->emulate_environment($env));
-
-            local *STDIN  = $env->{'psgi.input'};
-            local *STDOUT = $stdout;
-            local *STDERR = $env->{'psgi.errors'};
-
             my $saver = SelectSaver->new("::STDOUT");
-            $code->();
+            {
+                local %ENV = (%ENV, $class->emulate_environment($env));
+
+                local *STDIN  = $env->{'psgi.input'};
+                local *STDOUT = $stdout;
+                local *STDERR = $env->{'psgi.errors'};
+
+                $code->();
+            }
         }
 
         seek( $stdout, 0, SEEK_SET )
