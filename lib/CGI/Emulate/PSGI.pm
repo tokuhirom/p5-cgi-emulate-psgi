@@ -50,7 +50,7 @@ sub emulate_environment {
         REMOTE_HOST     => 'localhost',
         REMOTE_PORT     => int( rand(64000) + 1000 ),    # not in RFC 3875
         # REQUEST_URI     => $uri->path_query,                 # not in RFC 3875
-        ( map { $_ => $env->{$_} } grep !/^psgix?\./, keys %$env )
+        ( map { $_ => $env->{$_} } grep { $_ ne "HTTP_PROXY" } grep !/^psgix?\./, keys %$env )
     };
 
     return wantarray ? %$environment : $environment;
