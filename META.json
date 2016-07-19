@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.037, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Dist::Milla version v1.0.16, Dist::Zilla version 6.006, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -15,12 +15,12 @@
    "name" : "CGI-Emulate-PSGI",
    "no_index" : {
       "directory" : [
-         "t",
-         "xt",
+         "eg",
+         "examples",
          "inc",
          "share",
-         "eg",
-         "examples"
+         "t",
+         "xt"
       ]
    },
    "prereqs" : {
@@ -31,7 +31,7 @@
       },
       "develop" : {
          "requires" : {
-            "Dist::Milla" : "v1.0.15",
+            "Dist::Milla" : "v1.0.16",
             "Test::Pod" : "1.41"
          }
       },
@@ -61,7 +61,7 @@
          "web" : "https://github.com/tokuhirom/p5-cgi-emulate-psgi"
       }
    },
-   "version" : "0.21",
+   "version" : "0.22",
    "x_contributors" : [
       "Bastian Blank <waldi@debian.org>",
       "Clay Fouts <cfouts@liblime.com>",
@@ -70,8 +70,10 @@
       "James Wright <james2vegas@aim.com>",
       "Kazuho Oku <kazuhooku@gmail.com>",
       "Mark Stosberg <mark@stosberg.com>",
+      "Masahiro Nagano <kazeburo@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
-   ]
+   ],
+   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0217"
 }
 

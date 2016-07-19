@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.22  2016-07-19 08:03:23 PDT
+        - Do not set HTTP_PROXY (kazeburo) #14
+
 0.21  2015-07-21 09:02:04 PDT
         - Fix to restore the selected filehandle correctly #12
 
