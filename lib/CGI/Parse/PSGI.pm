@@ -72,19 +72,7 @@ sub parse_cgi_output {
         ];
     }
 
-    # TODO we can pass $output to the response body without buffering all?
-
-    {
-        my $length = 0;
-        while ( $output->read( my $buffer, 4096 ) ) {
-            $length += length($buffer);
-            $response->add_content($buffer);
-        }
-
-        if ( $length && !$response->content_length ) {
-            $response->content_length($length);
-        }
-    }
+    $response->content_length($remaining);
 
     return [
         $status,
@@ -94,7 +82,7 @@ sub parse_cgi_output {
                 map { ( $k => _cleanup_newline($_) ) } $response->headers->header($_);
             } $response->headers->header_field_names
         ],
-        [$response->content],
+        $output,
     ];
 }
 
