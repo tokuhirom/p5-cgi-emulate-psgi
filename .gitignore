@@ -11,3 +11,4 @@ blib
 !Build/
 !META.json
 !LICENSE
+/CGI-Emulate-PSGI-*
