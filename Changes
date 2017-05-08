@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.23  2017-05-08 04:45:43 UTC
+
+        - Respect an NPH script's HTTP status line (wu-lee) #4
+
 0.22  2016-07-19 08:03:23 PDT
         - Do not set HTTP_PROXY (kazeburo) #14
 
