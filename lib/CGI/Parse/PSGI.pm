@@ -1,7 +1,7 @@
 package CGI::Parse::PSGI;
 use strict;
 use base qw(Exporter);
-our @EXPORT_OK = qw( parse_cgi_output );
+our @EXPORT_OK = qw( parse_cgi_output parse_cgi_output_streaming );
 
 use IO::File; # perl bug: should be loaded to call ->getline etc. on filehandle/PerlIO
 use HTTP::Response;
@@ -96,6 +96,85 @@ sub parse_cgi_output {
         ],
         [$response->content],
     ];
+}
+
+sub parse_cgi_output_streaming {
+    my ($responder, $code) = @_;
+
+    my $output = \do {local *HANDLE};
+    my $headers;
+    my $response;
+    my $writer;
+
+    require CGI::Parse::PSGI::Handle;
+
+    tie *$output,'CGI::Parse::PSGI::Handle', sub {
+        my ($data) = @_;
+
+        # if we're still parsing the headers
+        if (!$response) {
+            if (defined $data) {
+                $headers .= $data;
+            }
+            else { # closed file before the end of headers
+                $headers = "HTTP/1.1 500 Internal Server Error\x0d\x0a";
+            }
+
+            # still more headers to come, return to the CGI
+            return unless $headers =~ /\x0d?\x0a\x0d?\x0a/;
+
+            ($headers,$data) =
+                ($headers =~ m{\A(.+?)\x0d?\x0a\x0d?\x0a(.*)\z}sm);
+
+            unless ( $headers =~ /^HTTP/ ) {
+                $headers = "HTTP/1.1 200 OK\x0d\x0a" . $headers;
+            }
+
+            $response = HTTP::Response->parse($headers);
+
+            # RFC 3875 6.2.3
+            if ($response->header('Location') && !$response->header('Status')) {
+                $response->header('Status', 302);
+            }
+        }
+
+        if ($response) { # we have parsed the headers
+            if ( $response->code == 500 && !defined($data) ) {
+                # ended after a raw 500
+                $responder->([
+                    500,
+                    [ 'Content-Type' => 'text/html' ],
+                    [ $response->error_as_HTML ]
+                ]);
+                return;
+            }
+            if (!$writer) {
+                my $status = $response->header('Status') || 200;
+                $status =~ s/\s+.*$//; # remove ' OK' in '200 OK'
+                # PSGI doesn't allow having Status header in the response
+                $response->remove_header('Status');
+
+                $writer = $responder->([
+                    $status,
+                    +[
+                        map {
+                            my $k = $_;
+                            map { ( $k => _cleanup_newline($_) ) }
+                                $response->headers->header($_);
+                        } $response->headers->header_field_names
+                    ],
+                ]);
+            }
+            if (defined $data) {
+                $writer->write($data) if length($data);
+            }
+            else {
+                $writer->close;
+            }
+        }
+    };
+
+    $code->($output);
 }
 
 sub _cleanup_newline {
